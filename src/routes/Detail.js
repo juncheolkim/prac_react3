@@ -1,24 +1,24 @@
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import styled from "styled-components";
-
-let YellowBtn = styled.button`
-    background: ${(props) => props.bg};
-    color: ${(props) => (props.bg === "blue" ? "white" : "black")};
-    padding: 10px;
-`;
-
-let NewBtn = styled.button(YellowBtn)`
-    // 블라블라
-`;
 
 export default function Detail(props) {
+    useEffect(() => {
+        setTimeout(() => {
+            setAlert(false);
+        }, 2000);
+    }, []);
+
+    let [alert, setAlert] = useState(true);
+
     let { id } = useParams();
     let [findShoes] = props.shoes.filter((item) => {
         return item.id === parseInt(id);
     });
     return (
         <div className="container">
-            <YellowBtn bg="blue">버튼</YellowBtn>
+            {alert === true ? (
+                <div className="alert alert-warning">2초이내 구매시 할인</div>
+            ) : null}
             <div className="row">
                 <div className="col-md-6">
                     <img
@@ -27,6 +27,7 @@ export default function Detail(props) {
                             (parseInt(id) + 1) +
                             ".jpg"
                         }
+                        alt=""
                         width="100%"
                     />
                 </div>
