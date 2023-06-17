@@ -4,6 +4,8 @@ import { Navbar, Container, Nav, Row, Col } from "react-bootstrap";
 import bg from "./img/bg.png";
 import { useState } from "react";
 import data from "./data.js";
+import { Routes, Route, Link } from "react-router-dom";
+import Detail from "./detail";
 
 function App() {
     let [shoes] = useState(data);
@@ -12,7 +14,7 @@ function App() {
         <div className="App">
             <Navbar bg="light" data-bs-theme="light">
                 <Container>
-                    <Navbar.Brand href="#home">let's shop time</Navbar.Brand>
+                    <Navbar.Brand href="#home">Let's shop time</Navbar.Brand>
                     <Nav className="me-auto">
                         <Nav.Link href="#home">Home</Nav.Link>
                         <Nav.Link href="#features">Store</Nav.Link>
@@ -20,23 +22,40 @@ function App() {
                     </Nav>
                 </Container>
             </Navbar>
-
-            <div
-                className="main-bg"
-                style={{ backgroundImage: `url(${bg})` }}
-            ></div>
-            <Container>
-                <Row>
-                    {shoes.map((item, idx) => {
-                        return <Shoes idx={idx} item={item} key={idx} />;
-                    })}
-                </Row>
-            </Container>
+            <Link to="/">홈</Link>
+            <Link to="/detail">상세페이지</Link>
+            <Routes>
+                <Route
+                    path="/"
+                    element={
+                        <>
+                            <div
+                                className="main-bg"
+                                style={{ backgroundImage: `url(${bg})` }}
+                            ></div>
+                            <Container>
+                                <Row>
+                                    {shoes.map((item, idx) => {
+                                        return (
+                                            <Card
+                                                idx={idx}
+                                                item={item}
+                                                key={idx}
+                                            />
+                                        );
+                                    })}
+                                </Row>
+                            </Container>
+                        </>
+                    }
+                />
+                <Route path="/detail" element={<Detail />} />
+            </Routes>
         </div>
     );
 }
 
-function Shoes(props) {
+function Card(props) {
     return (
         <Col key={props.idx}>
             <img
