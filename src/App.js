@@ -8,7 +8,7 @@ import { Routes, Route, Link, useNavigate, Outlet } from "react-router-dom";
 import Detail from "./routes/Detail";
 
 function App() {
-    let [shoes] = useState(data);
+    let [shoes, setShoes] = useState(data);
     let navigate = useNavigate();
 
     return (
@@ -40,7 +40,6 @@ function App() {
                     </Nav>
                 </Container>
             </Navbar>
-
             <Routes>
                 <Route
                     path="/"
@@ -52,21 +51,29 @@ function App() {
                             ></div>
                             <Container>
                                 <Row>
+                                    <button
+                                        onClick={() => {
+                                            let newShoes = [...shoes];
+                                            newShoes.sort((a, b) => {
+                                                return a.title.localeCompare(
+                                                    b.title
+                                                );
+                                            });
+                                            setShoes(newShoes);
+                                        }}
+                                    >
+                                        정렬
+                                    </button>
                                     {shoes.map((item, idx) => {
-                                        return (
-                                            <Card
-                                                idx={idx}
-                                                item={item}
-                                                key={idx}
-                                            />
-                                        );
+                                        return <Card item={item} key={idx} />;
                                     })}
                                 </Row>
                             </Container>
                         </>
                     }
                 />
-                <Route path="/detail" element={<Detail />} />
+
+                <Route path="/detail/:id" element={<Detail shoes={shoes} />} />
                 <Route path="/about" element={<About />}>
                     <Route path="member" element={<div>멤버</div>}></Route>
                     <Route
@@ -90,11 +97,18 @@ function About() {
 }
 
 function Card(props) {
+    let navigate = useNavigate();
     return (
-        <Col key={props.idx}>
+        <Col key={props.item.id}>
             <img
-                src={process.env.PUBLIC_URL + `/img/shoes${props.idx + 1}.jpg`}
+                src={
+                    process.env.PUBLIC_URL +
+                    `/img/shoes${props.item.id + 1}.jpg`
+                }
                 width="180px"
+                onClick={() => {
+                    navigate(`/detail/${props.item.id}`);
+                }}
             />
             <h4>{props.item.title}</h4>
             <p>{props.item.content}</p>
