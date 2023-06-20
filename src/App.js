@@ -77,7 +77,12 @@ function App() {
                                             "https://codingapple1.github.io/shop/data2.json"
                                         )
                                         .then((data) => {
+                                            let newShoes = [
+                                                ...shoes,
+                                                ...data.data,
+                                            ];
                                             console.log(data.data);
+                                            setShoes(newShoes);
                                         })
                                         .catch(() => {
                                             console.log("실패");
@@ -119,8 +124,9 @@ function Card(props) {
         <Col key={props.item.id}>
             <img
                 src={
-                    process.env.PUBLIC_URL +
-                    `/img/shoes${props.item.id + 1}.jpg`
+                    "https://codingapple1.github.io/shop/shoes" +
+                    (props.item.id + 1) +
+                    ".jpg"
                 }
                 width="180px"
                 onClick={() => {
