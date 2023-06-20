@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Nav } from "react-bootstrap";
 import { useParams } from "react-router-dom";
 
 export default function Detail(props) {
@@ -18,6 +19,8 @@ export default function Detail(props) {
     }, []);
 
     let [alert, setAlert] = useState(true);
+
+    let [tab, setTab] = useState(0);
 
     let { id } = useParams();
     let [findShoes] = props.shoes.filter((item) => {
@@ -73,6 +76,52 @@ export default function Detail(props) {
                     <button className="btn btn-danger">주문하기</button>
                 </div>
             </div>
+
+            <Nav variant="tabs" defaultActiveKey="link-0">
+                <Nav.Item>
+                    <Nav.Link
+                        onClick={() => {
+                            setTab(0);
+                        }}
+                        eventKey="link-0"
+                    >
+                        버튼0
+                    </Nav.Link>
+                </Nav.Item>
+                <Nav.Item>
+                    <Nav.Link
+                        onClick={() => {
+                            setTab(1);
+                        }}
+                        eventKey="link-1"
+                    >
+                        버튼1
+                    </Nav.Link>
+                </Nav.Item>
+                <Nav.Item>
+                    <Nav.Link
+                        onClick={() => {
+                            setTab(2);
+                        }}
+                        eventKey="link-2"
+                    >
+                        버튼2
+                    </Nav.Link>
+                </Nav.Item>
+            </Nav>
+            {tab === 0 ? (
+                <div>내용0</div>
+            ) : tab === 1 ? (
+                <div>내용1</div>
+            ) : (
+                <div>내용2</div>
+            )}
+
+            <TabContent tab={tab} />
         </div>
     );
+}
+
+function TabContent({ tab }) {
+    return [<div>내용0</div>, <div>내용1</div>, <div>내용2</div>][tab];
 }
