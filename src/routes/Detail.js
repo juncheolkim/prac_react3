@@ -2,6 +2,12 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 export default function Detail(props) {
+    function isDigit(str) {
+        return !isNaN(parseFloat(str)) && isFinite(str);
+    }
+
+    let [showWarning, setShowWarning] = useState(true);
+
     useEffect(() => {
         let a = setTimeout(() => {
             setAlert(false);
@@ -35,7 +41,33 @@ export default function Detail(props) {
                     />
                 </div>
                 <div className="col-md-6">
-                    <h4 className="pt-5">{findShoes.title}</h4>
+                    {!showWarning ? (
+                        <div
+                            style={{
+                                width: "100%",
+                                display: "flex",
+                                justifyContent: "center",
+                            }}
+                        >
+                            <p
+                                style={{
+                                    backgroundColor: "red",
+                                    display: "inline",
+
+                                    color: "white",
+                                    padding: "10px",
+                                }}
+                            >
+                                경고 : 숫자만 입력하세요!
+                            </p>
+                        </div>
+                    ) : null}
+                    <input
+                        onChange={(e) => {
+                            setShowWarning(isDigit(e.target.value));
+                        }}
+                    ></input>
+                    <h4>{findShoes.title}</h4>
                     <p>{findShoes.content}</p>
                     <p>{findShoes.price}</p>
                     <button className="btn btn-danger">주문하기</button>
