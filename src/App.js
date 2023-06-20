@@ -10,6 +10,8 @@ import axios from "axios";
 
 function App() {
     let [shoes, setShoes] = useState(data);
+    let [showBtn, setShowBtn] = useState(true);
+    let [nowLoading, setNowLoading] = useState(false);
     let navigate = useNavigate();
 
     return (
@@ -70,27 +72,51 @@ function App() {
                                     })}
                                 </Row>
                             </Container>
-                            <button
-                                onClick={() => {
-                                    axios
-                                        .get(
-                                            "https://codingapple1.github.io/shop/data2.json"
-                                        )
-                                        .then((data) => {
-                                            let newShoes = [
-                                                ...shoes,
-                                                ...data.data,
-                                            ];
-                                            console.log(data.data);
-                                            setShoes(newShoes);
-                                        })
-                                        .catch(() => {
-                                            console.log("실패");
-                                        });
-                                }}
-                            >
-                                버튼
-                            </button>
+                            {nowLoading ? <p>로딩중 입니다.</p> : null}
+                            {showBtn ? (
+                                <button
+                                    onClick={() => {
+                                        setNowLoading(true);
+                                        if (shoes.length === 3) {
+                                            axios
+                                                .get(
+                                                    "https://codingapple1.github.io/shop/data2.json"
+                                                )
+                                                .then((data) => {
+                                                    let newShoes = [
+                                                        ...shoes,
+                                                        ...data.data,
+                                                    ];
+                                                    console.log(data.data);
+                                                    setShoes(newShoes);
+                                                })
+                                                .catch(() => {
+                                                    console.log("실패");
+                                                });
+                                        } else if (shoes.length === 6) {
+                                            axios
+                                                .get(
+                                                    "https://codingapple1.github.io/shop/data3.json"
+                                                )
+                                                .then((data) => {
+                                                    let newShoes = [
+                                                        ...shoes,
+                                                        ...data.data,
+                                                    ];
+                                                    console.log(data.data);
+                                                    setShoes(newShoes);
+                                                })
+                                                .catch(() => {
+                                                    console.log("실패");
+                                                });
+                                            setShowBtn(false);
+                                        }
+                                        setNowLoading(false);
+                                    }}
+                                >
+                                    버튼
+                                </button>
+                            ) : null}
                         </>
                     }
                 />
